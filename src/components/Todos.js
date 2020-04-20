@@ -10,6 +10,7 @@ class Todos extends Component {
 }
 //proptypes give validation and checks to if a property has been passed or not
 Todos.propTypes={
-    todos : PropTypes.array.isRequired
+    todos : PropTypes.array.isRequired,
+    markComplete:PropTypes.func.isRequired
 }
 export default Todos;

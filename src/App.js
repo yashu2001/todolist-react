@@ -5,41 +5,37 @@ import Todos from  './components/Todos';
 import Layout from './components/Layout';
 import Addtodos from './components/Addtodos';
 import About from './components/pages/About';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 class App extends React.Component {
   state={
-    todos:[
-      {
-        id:1,
-        task:"Dinner with friends",
-        completed:false
-      },
-      {
-        id:2,
-        task:"Learn node with academind",
-        completed:false
-      },
-      {
-        id:3,
-        task:"Learn react with brad",
-        completed:false
-      }
-    ]
+    todos:[]
   }
-  markComplete=(id)=>{
+  async componentDidMount(){
+    let res=await axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10');
+    console.log(res);
+    this.setState({todos:res.data});
+  }
+  markComplete=async (id)=>{
     this.setState({todos:this.state.todos.map(todo=>{
       todo.completed=todo.id===id?!todo.completed:todo.completed;
       return todo;
     })})
 
   }
-  delete=(id)=>{
+  delete=async (id)=>{
+    await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
     this.setState({todos:this.state.todos.filter(todo=>{
       return todo.id!==id;
     })});
   }
-  addTask=(task)=>{
+   addTask=async (task)=>{
+    await axios.post('https://jsonplaceholder.typicode.com/todos',{
+      title:task,
+      completed:false
+    });
     this.setState({
-      todos:[...this.state.todos,{id:(this.state.todos.length+1),task,completed:false}]
+      todos:[...this.state.todos,{id:(this.state.todos.length+1),title:task,completed:false}]
     });
     return null;
   }

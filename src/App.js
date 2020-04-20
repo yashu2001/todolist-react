@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Todos from  './components/Todos';
+import Layout from './components/Layout';
 class App extends React.Component {
   state={
     todos:[
@@ -36,7 +37,7 @@ class App extends React.Component {
   render(){
   return (
     <div className="App">
-      <h1>Todo List</h1>
+      <Layout />
       <Todos todos={this.state.todos} markComplete={this.markComplete} delete={this.delete}/>
     </div>
   );}

@@ -1,7 +1,10 @@
 import React from 'react';
+import {BrowserRouter as Router,Route} from 'react-router-dom';
 import './App.css';
 import Todos from  './components/Todos';
 import Layout from './components/Layout';
+import Addtodos from './components/Addtodos';
+import About from './components/pages/About';
 class App extends React.Component {
   state={
     todos:[
@@ -32,14 +35,30 @@ class App extends React.Component {
   delete=(id)=>{
     this.setState({todos:this.state.todos.filter(todo=>{
       return todo.id!==id;
-    })})
+    })});
+  }
+  addTask=(task)=>{
+    this.setState({
+      todos:[...this.state.todos,{id:(this.state.todos.length+1),task,completed:false}]
+    });
+    return null;
   }
   render(){
   return (
-    <div className="App">
-      <Layout />
-      <Todos todos={this.state.todos} markComplete={this.markComplete} delete={this.delete}/>
-    </div>
+    <Router>
+      <div className="App">
+        <Layout />
+        <Route path="/about" component={About} />
+        <Route exact path="/" render={props=>(
+          <React.Fragment>
+            <Todos todos={this.state.todos} markComplete={this.markComplete} delete={this.delete}/>
+            <br />
+            <Addtodos addTask={this.addTask}/>
+          </React.Fragment>
+        )} />
+        
+      </div>
+    </Router> 
   );}
 }
 
